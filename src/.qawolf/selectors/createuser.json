@@ -1,0 +1,32 @@
+[
+ {
+  "html": {
+   "ancestors": [
+    "<div class=\"form-group\"></div>",
+    "<form class=\"well\" action=\"/users/create\" method=\"post\"></form>"
+   ],
+   "node": "<input class=\"form-control\" type=\"text\" name=\"username\"/>"
+  },
+  "index": 0
+ },
+ {
+  "html": {
+   "ancestors": [
+    "<div class=\"form-group\"></div>",
+    "<form class=\"well\" action=\"/users/create\" method=\"post\"></form>"
+   ],
+   "node": "<input class=\"form-control\" type=\"text\" name=\"username\"/>"
+  },
+  "index": 1
+ },
+ {
+  "html": {
+   "ancestors": [
+    "<form class=\"well\" action=\"/users/create\" method=\"post\"></form>",
+    "<div class=\"col-md-4\"></div>"
+   ],
+   "node": "<input class=\"btn btn-default\" type=\"submit\"/>"
+  },
+  "index": 2
+ }
+]

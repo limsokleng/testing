@@ -1,0 +1,181 @@
+version: 2.1
+commands:
+  setup-cd:
+    steps:
+    - run: 
+        name: Configure environment
+        command: |
+          # install terraform
+          curl -o terraform.zip https://releases.hashicorp.com/terraform/0.12.21/terraform_0.12.21_linux_amd64.zip
+          sudo unzip terraform.zip -d /usr/local/bin/
+          
+          # install helm
+          curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+
+          # install kubectl
+          curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+          chmod +x ./kubectl 
+          sudo mv ./kubectl /usr/local/bin/kubectl
+
+          # configure kops
+          curl -LO https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
+          chmod +x kops-linux-amd64
+          sudo mv kops-linux-amd64 /usr/local/bin/kops
+          kops export kubecfg rmit.k8s.local --state s3://rmit-kops-state-7zlvq0
+
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:lts
+
+    steps:
+      - checkout
+      
+      - run: |
+          cd src
+          npm install
+          npm run test-lint
+          npm run test-unit
+          npm run test-coverage
+          mkdir -p test-results/unit 
+          mv test-results.xml test-results/unit/results.xml
+      
+      - store_test_results:
+          path: src/test-results
+
+  integration:
+    docker:
+      - image: circleci/node:lts
+      - image: postgres:10.7
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+
+      - run: 
+          name: Set up environment
+          command: |
+            wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O- | sudo apt-key add -
+            echo "deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main" | sudo tee /etc/apt/sources.list.d/postgresql.list
+            sudo apt update
+            sudo apt install postgresql-client-10
+            psql -h localhost -U postgres -c "CREATE DATABASE servian;"
+            cd src
+            npm install
+
+      - run:
+          name: Run integration tests
+          command: |
+            cd src
+            npm run test-integration
+            mkdir -p test-results/integration 
+            mv test-results.xml test-results/integration/results.xml
+
+      - store_test_results:
+          path: src/test-results
+  
+  e2e:
+    docker:
+      - image: qawolf/qawolf:v0.9.2
+      - image: postgres:10.7
+        environment:
+          POSTGRES_PASSWORD: password
+    environment:
+      QAW_HEADLESS: true
+      DB_USERNAME: postgres
+      DB_PASSWORD: password
+      DB_NAME: servian
+      DB_HOSTNAME: localhost
+
+    steps: 
+      - checkout
+
+      - run:
+          name: set up environment
+          command: |
+            cd src
+            npm install 
+            apt update
+            apt install postgresql-client-10 -y
+            
+            psql -h localhost -U postgres -c "CREATE DATABASE servian;"
+
+      - run: 
+          name: End 2 end tests
+          no_output_timeout: 2m
+          command: |
+            cd src
+
+            npm run start:prod & 
+            npx wait-on http://localhost:3000
+            
+            npm run test-e2e
+
+  package:
+    machine: true
+    environment:
+      ECR: <insert>
+      reponame: app
+      NODE_ENV: production
+    steps:
+      - checkout
+
+      - run:
+          name: Set up
+          command: |
+            mkdir -p artifacts
+
+            # install AWS CLI
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+
+            # instll helm
+            curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+      
+      - run: 
+          name: Build image
+          command: |
+            cd src
+            export IMAGE_TAG=${ECR}/${reponame}:${CIRCLE_SHA1}
+            echo ${IMAGE_TAG} > ../artifacts/image.txt
+            docker build -t ${IMAGE_TAG} .
+            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ECR}
+            docker push ${IMAGE_TAG}
+
+      - run:
+          name: Package helm
+          command: | 
+
+            #helm package helm/acme --app-version ${CIRCLE_SHA1} -d artifacts
+      - run:
+          name: Package infra
+          command: |
+            cp -r infra artifacts/infra
+
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - artifacts
+
+
+
+workflows:
+  version: 2
+  build-test-package:
+    jobs:
+      - build
+      - integration:
+          requires: 
+            - build
+      - e2e:
+          requires:
+            - build
+      - package:
+          requires:
+            - e2e
+            - integration
+          filters:
+            branches:
+              only: master

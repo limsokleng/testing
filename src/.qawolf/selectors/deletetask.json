@@ -1,0 +1,72 @@
+[
+ {
+  "html": {
+   "ancestors": [
+    "<div class=\"form-group\"></div>",
+    "<form class=\"well\" action=\"/users/create\" method=\"post\"></form>"
+   ],
+   "node": "<input class=\"form-control\" type=\"text\" name=\"username\"/>"
+  },
+  "index": 0
+ },
+ {
+  "html": {
+   "ancestors": [
+    "<div class=\"form-group\"></div>",
+    "<form class=\"well\" action=\"/users/create\" method=\"post\"></form>"
+   ],
+   "node": "<input class=\"form-control\" type=\"text\" name=\"username\"/>"
+  },
+  "index": 1
+ },
+ {
+  "html": {
+   "ancestors": [
+    "<form class=\"well\" action=\"/users/create\" method=\"post\"></form>",
+    "<div class=\"col-md-4\"></div>"
+   ],
+   "node": "<input class=\"btn btn-default\" type=\"submit\"/>"
+  },
+  "index": 2
+ },
+ {
+  "html": {
+   "ancestors": [
+    "<div class=\"form-group\"></div>",
+    "<form class=\"form-inline\" action=\"/users/7/tasks/create\" method=\"post\"></form>"
+   ],
+   "node": "<input class=\"input-sm form-control\" type=\"text\" name=\"title\"/>"
+  },
+  "index": 3
+ },
+ {
+  "html": {
+   "ancestors": [
+    "<div class=\"form-group\"></div>",
+    "<form class=\"form-inline\" action=\"/users/7/tasks/create\" method=\"post\"></form>"
+   ],
+   "node": "<input class=\"input-sm form-control\" type=\"text\" name=\"title\"/>"
+  },
+  "index": 4
+ },
+ {
+  "html": {
+   "ancestors": [
+    "<div class=\"form-group\"></div>",
+    "<form class=\"form-inline\" action=\"/users/7/tasks/create\" method=\"post\"></form>"
+   ],
+   "node": "<input class=\"btn btn-sm btn-default\" type=\"submit\"/>"
+  },
+  "index": 5
+ },
+ {
+  "html": {
+   "ancestors": [
+    "<li></li>",
+    "<ul></ul>"
+   ],
+   "node": "<a class=\"btn btn-xs btn-warning\" href=\"/users/7/tasks/5/destroy\" innertext=\"delete\">delete</a>"
+  },
+  "index": 6
+ }
+]
