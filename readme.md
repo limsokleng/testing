@@ -1,15 +1,17 @@
 # Overview
-    Continuous Integration is very good way to do automation deployment.Though,In our recent application, CI seem to be more complicated in 
-    processing all the deployment and very time consuming. So, at this moment, we will be using another approach to make life easier 
-    by deploying with container. Kubernetes is a very impressive tool to deploy our application in a way of continuous disintegration. 
-    It helps reducing expenses and resources. Moreover, it supports with multiple environments and different operating system.
+    Continuous Integration is very good way to do automation deployment.Though,In our recent application, CI seem to be 
+    more complicated in processing all the deployment and very time consuming. So, at this moment, we will be using 
+    another approach to make life easier by deploying with container. Kubernetes is a very impressive tool to deploy our 
+    application in a way of continuous disintegration. It helps reducing expenses and resources. Moreover, it supports 
+    with multiple environments and different operating system.
 
-    By using this method, Firstly, we will create helm chart for deploying to kubernetes. Secondly, we will deploy the non production 
-    environment to test whether things go as plan or not. In the testing deployment, we will automatically create namespace for the 
-    application in Kubernetes. Then, deploying a database to back the application. After creating database, we need to migrate database 
-    using script against the one we created before. Lastly of this step, we will deploy helm chart to Kubernetes cluster. Thirdly, 
-    if everything is working as expected, we will deploy a production environment. At this stage, stage gate will be added to ask deployer 
-    for approval before next deployment. Lastly, we will create aws cloudwatch for checking the logs of the production.
+    By using this method, Firstly, we will create helm chart for deploying to kubernetes. Secondly, we will deploy the 
+    non production environment to test whether things go as plan or not. In the testing deployment, we will automatically 
+    create namespace for the application in Kubernetes. Then, deploying a database to back the application. After creating
+    database, we need to migrate database using script against the one we created before. Lastly of this step, we will deploy 
+    helm chart to Kubernetes cluster. Thirdly, if everything is working as expected, we will deploy a production environment. 
+    At this stage, stage gate will be added to ask deployer for approval before next deployment. Lastly, we will create aws 
+    cloudwatch for checking the logs of the production.
 
 # How to deploy with Kubernetes
 - Step 1: make sure all credentials file are correct. (eg: mine is ~/rmit-creds.sh)
@@ -54,8 +56,8 @@ Run the Makefile when changes are made by "ENV=non-production make init". Once w
 ![circleci](https://user-images.githubusercontent.com/60633895/84591252-57c81a00-ae80-11ea-8b80-d691daebb01b.PNG)
 ![namespace](https://user-images.githubusercontent.com/60633895/84591263-60b8eb80-ae80-11ea-9ef5-e72da56a2935.PNG)
 ![production-namespace](https://user-images.githubusercontent.com/60633895/84591265-657d9f80-ae80-11ea-896d-3fbfabaeba89.PNG)
-
-
+![database](https://user-images.githubusercontent.com/60633895/84591435-a9bd6f80-ae81-11ea-92d4-0b1e82cb6ba3.PNG)
+![approval](https://user-images.githubusercontent.com/60633895/84591456-dc676800-ae81-11ea-9be9-5b8db5d79606.PNG)
 
 
 
