@@ -47,7 +47,7 @@ Run the Makefile when changes are made by "ENV=non-production make init". Once w
 
 
 - Step 5: Before deploying to circleci, we need to make sure the project in circleci has the same credentials as what we input in the start of the program.
-
+![Capture](https://user-images.githubusercontent.com/60633895/84591562-daea6f80-ae82-11ea-9fef-6790f0cb6240.PNG)
 
 
 
