@@ -17,9 +17,11 @@
 - Step 1: make sure all credentials file are correct. (eg: mine is ~/rmit-creds.sh)
 - Step 2: Starting up the environment using the command below:
 
-cd environment
-make up
-make kube-up
+cd environment.
+
+make up.
+
+make kube-up.
 
 
 
@@ -27,6 +29,7 @@ make kube-up
 - Step 3: After starting the environment, we will get the output of ECR, bucket name, kops bucket name, and dynamo table name. open the Makefile in infra folder and change the value of each parameter. For example:
 
 <img width="506" alt="Screen Shot 2020-06-14 at 7 53 13 pm" src="https://user-images.githubusercontent.com/60633895/84591159-93161900-ae7f-11ea-9670-af16b32ae05f.png">
+<img width="621" alt="Screen Shot 2020-06-14 at 9 46 48 pm" src="https://user-images.githubusercontent.com/60633895/84592381-b1ccdd80-ae88-11ea-8180-ec8b9dce7e9b.png">
 
 Then, we need to change Makefile command to this.
 
@@ -91,40 +94,45 @@ Remove Non Production:
 
 - Step 1: Reinitialize terraform with test remote backend
 
-cd infra
-ENV=non-production make init
+cd infra.
+
+ENV=non-production make init.
 
 - Step 2: Remove the infrastructure we deployed
 
-ENV=non-production make down
+ENV=non-production make down.
 
 
 Remove Production:
 
 - Step 1: Reinitialize terraform with test remote backend
 
-cd infra
-ENV=production make init
+cd infra.
+
+ENV=production make init.
 
 - Step 2: Remove the infrastructure we deployed
 
-ENV=production make down
+ENV=production make down.
 
 
 Remove apps:
 
 - Step 1: We need to uninstall helm release
 
-helm list -A
+helm list -A.
 
-helm uninstall [name] -n non-production
-helm uninstall [name] -n production
+helm uninstall [name] -n non-production.
+
+helm uninstall [name] -n production.
 
 
 Remove Kubernetes and other environment:
 
 - Delete cluster and other resources
 
-cd environment
-make kube-down
+cd environment.
+
+make kube-down.
+
 make down
