@@ -1,8 +1,8 @@
 subnet_ids = [
-  "subnet-08f0449de521835aa",
-  "subnet-0b2286586cac5ce1a"
+  "subnet-0dc5c1f10a503e7b4",
+  "subnet-06fbb45b0fb41ddb9"
 ]
 username = "postgres"
 password = "password"
-vpc_id = "vpc-0f1b302dd076d2f5a"
+vpc_id = "vpc-0cbfa9b02fba9435d"
 name = "acme"
