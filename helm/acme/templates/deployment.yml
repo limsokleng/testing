@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "acme"
+spec:
+  selector:
+    matchLabels:
+      app: "acme"
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: "acme"
+    spec:
+      containers:
+      - image: {{ .Values.image }}
+        name: "acme"
+        env:
+          - name: DB_USERNAME
+            value: {{ .Values.DB_USERNAME }}
+          - name: DB_PASSWORD
+            value: {{ .Values.DB_PASSWORD }}
+          - name: DB_NAME
+            value: {{ .Values.DB_NAME }}
+          - name: DB_HOSTNAME
+            value: {{ .Values.DB_HOSTNAME }}
+        ports:
+        - containerPort: 3000

@@ -1,0 +1,5 @@
+
+DB_USERNAME: postgres
+DB_PASSWORD: password
+DB_NAME: servian
+DB_HOSTNAME: localhost
